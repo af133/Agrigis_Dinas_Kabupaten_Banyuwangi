@@ -20,7 +20,7 @@
     @php
         $dataUser = session('dataUser');
     @endphp
-
+ <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     @if (!Route::is('login'))
         @include('components.navbar', $dataUser)
     @endif
