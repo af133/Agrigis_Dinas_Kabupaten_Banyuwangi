@@ -105,7 +105,6 @@ class Mapping extends Controller
             'status_tanam' => $validated['statusPanen'],
         ]);
         
-        // Tambah laporan
         LaporanMapping::create([
             
             'akun_id' => session('dataUser')['id'],
