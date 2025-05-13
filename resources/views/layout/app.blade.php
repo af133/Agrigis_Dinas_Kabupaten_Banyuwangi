@@ -10,6 +10,8 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="{{ asset('build/assets/app-C2QBqpaD.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('build/assets/app-RYJ67zM2.css') }}">
 
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
