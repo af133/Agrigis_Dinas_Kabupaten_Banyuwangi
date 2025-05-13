@@ -23,7 +23,7 @@
     </div>
 <x-nav-link href="{{ route('mapping') }}" :active="request()->is('mapping')">
     <div class="flex items-center space-x-2">
-        <img src="{{ asset('icons/location.png') }}" alt="Mapping Icon" class="w-5 h-5">
+        <img src="{{ asset('icons/Location.png') }}" alt="Mapping Icon" class="w-5 h-5">
         <span>Mapping</span>
     </div>
 </x-nav-link>
@@ -52,7 +52,7 @@
 @if ($status == 'Kepala Dinas')
     <x-nav-link href="{{ route('notifications') }}" :active="request()->is('notifications')">
         <div class="flex items-center space-x-2">
-            <img src="{{ asset('icons/notification.png') }}" alt="Notifikasi Icon" class="w-5 h-5">
+            <img src="{{ asset('icons/Notification.png') }}" alt="Notifikasi Icon" class="w-5 h-5">
             <span>Notifikasi</span>
         </div>
     </x-nav-link>
@@ -61,7 +61,7 @@
 <div class="mt-3 space-y-2 text-sm">
     <x-nav-link href="{{route('profile')}}" :active="request()->is('profile')">
         <div class="flex items-center space-x-2">
-            <img src="{{ asset('icons/profile.png') }}" alt="Profil Icon" class="w-5 h-5">
+            <img src="{{ asset('icons/Profile.png') }}" alt="Profil Icon" class="w-5 h-5">
             <span>Akun Profil</span>
         </div>
     </x-nav-link>
