@@ -93,8 +93,10 @@ public function updateProfile(Request $request)
 
             $uploadedFile = $request->file('path_img')->getRealPath();
             $uploadResult = $cloudinary->uploadApi()->upload($uploadedFile, [
-                'folder' => 'user_profile', // Menyimpan di folder tertentu di Cloudinary
+                'folder' => 'user_profile', 
             ]);
+            dd(session('dataUser'));
+
 
             // Menyimpan URL gambar yang diupload
             $user->path_img = $uploadResult['secure_url'] ?? null;
