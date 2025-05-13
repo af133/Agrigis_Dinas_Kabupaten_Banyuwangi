@@ -15,7 +15,7 @@ $dataUser=session('dataUser')
             Tambah Titik
         </button>
         @else
-        <div id="addBtn"  ></div>
+        <div id="addBtn"></div>
         @endif
         <div id="map" class="mt-4 lg:m-4 m-0 rounded-2xl w-ful h-113 z-1 border-2 border-[#0E5509]"></div>
   <!-- Form Input -->
@@ -132,8 +132,6 @@ document.addEventListener("DOMContentLoaded", function() {
 function closeForm() {
     document.getElementById("formBox").style.display = 'none';
 }
-    </script>
-<script>
     
 
 let map = L.map('map').setView([-2.5, 118], 5);
@@ -400,8 +398,12 @@ function updateMarker(loc, updatedData) {
 
     loc.marker = marker;
 }
-
+const userStatus = "<?php echo $userData['status']; ?>";
 map.on('click', function(e) {
+if (userStatus !== 'Staf') {
+    alert("Hanya staf yang dapat menambahkan data.");
+    return;
+  }
   const { lat, lng } = e.latlng;
   document.getElementById("lat").value = lat;
   document.getElementById("lng").value = lng;
