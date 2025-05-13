@@ -10,11 +10,11 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="{{ asset('build/assets/app-C2QBqpaD.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('build/assets/app-RYJ67zM2.css') }}">
-
-    @vite('resources/js/app.js')
+    <script src="{{ secure_asset('build/assets/app-C2QBqpaD.js') }}"></script>
+    <link rel="stylesheet" href="{{ secure_asset('build/assets/app-RYJ67zM2.css') }}">
     @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
+
 </head>
 <body class="bg-[#F1FFDE] h-full w-full">
     @php
