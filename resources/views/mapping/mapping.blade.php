@@ -398,7 +398,7 @@ function updateMarker(loc, updatedData) {
 
     loc.marker = marker;
 }
-const userStatus = "<?php echo $userData['status']; ?>";
+const userStatus = "<?php echo $dataUser['status']; ?>";
 map.on('click', function(e) {
 if (userStatus !== 'Staf') {
     alert("Hanya staf yang dapat menambahkan data.");
@@ -421,10 +421,7 @@ function tampilkanMarkerPreview(lat, lng) {
     document.getElementById("lng").value = pos.lng;
   });
 }
-function closeForm() {
-    console.log('Form is closing');
-    document.getElementById("formBox").classList.add("hidden");
-}
+
 fetch('/mapping/data')
   .then(res => res.json())
   .then(data => {
