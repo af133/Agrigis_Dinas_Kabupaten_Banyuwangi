@@ -9,7 +9,7 @@
 
 
 <div class="text-[#021D00] flex justify-center m-[1rem]">
-    <img src="{{asset('public/icons/tani 1 (3).png')}}" alt="#">
+    <img src="https://github.com/af133/Agrigis_Dinas_Kabupaten_Banyuwangi/blob/5b7c2d4296f3d0ab280b5ae11f549bcf6758bc48/public/icons/tani%201%20(3).png" alt="#">
     <h1 class="font-bold text-[clamp(1.2rem,2.3vw,3.3rem)]">Banyuwangi AgriGIS</h1>
 </div>
 
