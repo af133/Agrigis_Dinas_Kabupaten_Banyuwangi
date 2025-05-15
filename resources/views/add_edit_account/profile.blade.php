@@ -34,7 +34,7 @@
             {{-- Nama --}}
             <div>
                 <label class="block text-sm text-gray-700 mb-1">Nama</label>
-                <input type="text" name="nama" id="nama" readonly
+                <input type="text" name="name" id="name" readonly
                        class="editable w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-600"
                        style="background-color: #DDFFAC; border-color: #727272;"
                        value="{{ $dataUser['nama'] ?? '' }}">
@@ -96,18 +96,15 @@
 
 {{-- Script --}}
 <script>
-    // Input yang bisa diedit
-    const formInputs = ['nama', 'path_img', 'password', 'nmr_telpon'];
+    const formInputs = ['name', 'path_img', 'password', 'nmr_telpon'];
     const editBtn = document.getElementById('editBtn');
     const saveBtn = document.getElementById('saveBtn');
     const cancelBtn = document.getElementById('cancelBtn');
     const form = document.getElementById('akunForm');
 
-    // Simpan data asli untuk rollback saat cancel
     const originalData = {};
     formInputs.forEach(id => {
-        const input = document.getElementById(id);
-        originalData[id] = input ? input.value : '';
+        originalData[id] = document.getElementById(id)?.value || '';
     });
 
     editBtn.addEventListener('click', () => {
@@ -124,8 +121,8 @@
         formInputs.forEach(id => {
             const input = document.getElementById(id);
             if (input) {
-                input.value = originalData[id];
                 input.setAttribute('readonly', true);
+                input.value = originalData[id];
             }
         });
         editBtn.classList.remove('hidden');
@@ -139,7 +136,10 @@
             e.preventDefault();
             return;
         }
-        // Boleh hapus setTimeout kalau ingin submit langsung
+
+        setTimeout(() => {
+            window.location.href = "{{ route('profile') }}";
+        }, 500);
     });
 </script>
 @endsection
