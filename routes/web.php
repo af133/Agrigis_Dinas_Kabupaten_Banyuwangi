@@ -22,7 +22,7 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login'); // tetap 'login' untuk form
 
-Route::post('login',[Autentifikasi::class,'login'])->name('login.submit'); 
+Route::post('login',[Autentifikasi::class,'login'])->name('login.submit'); // ubah nama
 
 
 
@@ -66,7 +66,11 @@ Route::post('/profil/update', [Autentifikasi::class, 'updateProfile'])->name('pr
 
 Route::get('notification', [Notification::class,'showNotification'])->name('notifications');
 
+// -------------------------------------------------------------------------------
+// --------------------------------- Logout -------------------------------------
+// -------------------------------------------------------------------------------
 
+Route::post('/logout', [Autentifikasi::class, 'logout'])->name('logout');
 
 
 
