@@ -4,7 +4,7 @@
 
 <div
   class="h-[10rem] bg-cover bg-center"
-  style="background-image: url('{{ asset('img/design/sawa.png') }}');"
+  style="background-image: url('icons/tani 1 (3).png}');"
 ></div>
 
 
