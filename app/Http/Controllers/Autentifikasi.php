@@ -55,7 +55,7 @@ class Autentifikasi extends Controller
     }
 
 
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request, Cloudinary $cloudinary)
 {
     $userId = session('dataUser.id');
     $user = Akun::find($userId);
@@ -71,7 +71,6 @@ class Autentifikasi extends Controller
         'path_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
-    // Update jika diisi, kalau tidak, tetap pakai data lama
     if ($request->filled('name')) {
         $user->nama = $request->name;
     }
@@ -84,23 +83,19 @@ class Autentifikasi extends Controller
         $user->password = Hash::make($request->password);
     }
 
-    // Upload gambar jika ada
     if ($request->hasFile('path_img')) {
         try {
-            $cloudinary = new Cloudinary([
-                'cloud' => [
-                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                    'api_key'    => env('CLOUDINARY_API_KEY'),
-                    'api_secret' => env('CLOUDINARY_API_SECRET'),
-                ],
-            ]);
+            $filePath = $request->file('path_img')->getRealPath();
 
-            $uploadedFile = $request->file('path_img')->getRealPath();
-            $uploadResult = $cloudinary->uploadApi()->upload($uploadedFile, [
+            // Upload ke Cloudinary, ini cara yang direkomendasikan Cloudinary PHP SDK 2.x
+            $uploadResult = $cloudinary->uploadApi()->upload($filePath, [
                 'folder' => 'user_profile',
+                'public_id' => 'user_' . $user->id . '_' . time(),
+                'overwrite' => true,
+                'resource_type' => 'image'
             ]);
 
-            $user->path_img = $uploadResult['secure_url'] ?? $user->path_img;
+            $user->path_img = $uploadResult['secure_url'];
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal mengunggah gambar: ' . $e->getMessage());
         }
@@ -108,7 +103,6 @@ class Autentifikasi extends Controller
 
     $user->save();
 
-    // Update session
     session(['dataUser' => [
         'id' => $user->id,
         'nama' => $user->nama,
@@ -121,7 +115,6 @@ class Autentifikasi extends Controller
 
     return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui');
 }
-
     public function logout(Request $request)
 {
     // Hapus semua data session
