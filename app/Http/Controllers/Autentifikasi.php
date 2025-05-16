@@ -68,7 +68,7 @@ public function updateProfile(Request $request)
         'name' => 'nullable|string|max:255',
         'password' => 'nullable|string|min:6',
         'nmr_telpon' => 'nullable|string|max:15',
-        'path_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:200048',
+        'path_img' => 'nullable',
     ]);
 
     // Update jika diisi, kalau tidak, tetap pakai data lama
@@ -84,24 +84,24 @@ public function updateProfile(Request $request)
         $user->password = Hash::make($request->password);
     }
    
-    if ($request->hasFile('path_img')) {
-         $cloudinary = new \Cloudinary\Cloudinary([
-        'cloud' => [
-            'cloud_name' => 'ds62ywc1c',
-            'api_key'    => '824819866697979',
-            'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
+     if ($request->hasFile('path_img')) {
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => 'ds62ywc1c',
+                'api_key'    => '824819866697979',
+                'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
             ],
         ]);
-    
+
         $file = $request->file('path_img')->getRealPath();
 
         try {
             $upload = $cloudinary->uploadApi()->upload($file);
-            $url = $upload['secure_url'];
-            $user->path_img = $url ?? $user->path_img;
+            $url= $upload['secure_url'];
+             $user->path_img=$url;
         } catch (\Exception $e) {
             dd('ERROR: ' . $e->getMessage());
-        }
+        }}
     }
     $user->save();
 
