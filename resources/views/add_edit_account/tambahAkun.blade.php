@@ -1,4 +1,5 @@
 @extends('layout.app')
+@section('title','Tambah Akun')
 @section('content')
 
 <h1 class="px-10 pt-4 text-[#0E5509] font-bold text-[clamp(1.4rem,2vw,3rem)]">Tambah Akun</h1>
