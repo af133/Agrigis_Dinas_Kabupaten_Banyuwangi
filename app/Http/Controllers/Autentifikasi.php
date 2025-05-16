@@ -136,6 +136,12 @@ public function updateProfile(Request $request)
         ]);
 
     }
-    
+     public function logout(Request $request)
+{
+    Session::flush();
+
+    return redirect()->route('login')->with('status', 'Berhasil logout.');
+}
+
    
 }
