@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title','profil')
+@section('title','Profil')
 
 @section('content')
 <div class="bg-transparent w-full ">
