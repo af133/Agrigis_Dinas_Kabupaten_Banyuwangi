@@ -90,8 +90,9 @@ public function updateProfile(Request $request)
             $cloudinary = new Cloudinary([
                 'cloud' => [
                     'cloud_name' => 'ds62ywc1c',
-                    'api_key'    => '181698161697883',
-                    'api_secret' => 'Sc1SnuGjG35YbqKl7GLPJZfM6RY',
+                    'api_key'    => '824819866697979',
+                    'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
+                    
                 ],
             ]);
 
