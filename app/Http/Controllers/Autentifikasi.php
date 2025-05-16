@@ -56,60 +56,71 @@ class Autentifikasi extends Controller
 
 
     public function updateProfile(Request $request)
-    {
-        $user = Akun::find(session('dataUser.id'));
+{
+    $userId = session('dataUser.id');
+    $user = Akun::find($userId);
 
+    if (!$user) {
+        return redirect()->route('profile')->with('error', 'User tidak ditemukan.');
+    }
 
-        // Validasi inputan
-        $request->validate([
-            'name' => 'nullable|string|max:255',
-            'password' => 'nullable|string|min:6',
-            'nmr_telpon' => 'nullable|string|max:15',
-            'path_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+    $request->validate([
+        'name' => 'nullable|string|max:255',
+        'password' => 'nullable|string|min:6',
+        'nmr_telpon' => 'nullable|string|max:15',
+        'path_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $user = Akun::find(session('dataUser.id'));
-
+    // Update jika diisi, kalau tidak, tetap pakai data lama
+    if ($request->filled('name')) {
         $user->nama = $request->name;
+    }
+
+    if ($request->filled('nmr_telpon')) {
         $user->nmr_telpon = $request->nmr_telpon;
-
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
-        if ($request->hasFile('path_img')) {
-            $imagePath = $request->file('path_img')->store('profile_pictures', 'public');
-            $user->path_img = $imagePath;
-        }
-
-        $user->save();
-
-        // Update session data
-        session(['dataUser' => [
-            'id' => $user->id,
-            'nama' => $user->nama,
-            'email' => $user->email,
-            'password' => $user->password,
-            'nmr_telpon' => $user->nmr_telpon,
-            'path_img' => $user->path_img,
-            'status' => $user->status->status,
-        ]]);
-
-        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui');
     }
-    public function Status(){
-        $statusPekerjaan = StatusPekerjaan::all()->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'status' => $item->status,
-            ];
-        });
 
-        return view('add_edit_account.tambahAkun', [
-            'statusPekerjaan' => $statusPekerjaan
-        ]);
-
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
     }
+
+    // Upload gambar jika ada
+    if ($request->hasFile('path_img')) {
+        try {
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key'    => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
+            ]);
+
+            $uploadedFile = $request->file('path_img')->getRealPath();
+            $uploadResult = $cloudinary->uploadApi()->upload($uploadedFile, [
+                'folder' => 'user_profile',
+            ]);
+
+            $user->path_img = $uploadResult['secure_url'] ?? $user->path_img;
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal mengunggah gambar: ' . $e->getMessage());
+        }
+    }
+
+    $user->save();
+
+    // Update session
+    session(['dataUser' => [
+        'id' => $user->id,
+        'nama' => $user->nama,
+        'email' => $user->email,
+        'password' => $user->password,
+        'nmr_telpon' => $user->nmr_telpon,
+        'path_img' => $user->path_img,
+        'status' => $user->status->status ?? null,
+    ]]);
+
+    return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui');
+}
 
     public function logout(Request $request)
 {
