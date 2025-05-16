@@ -141,7 +141,7 @@
         }
 
         setTimeout(() => {
-            window.location.href = "{{ route('profile') }}";
+            window.location.href = "{{ route('profil.update') }}";
         }, 500);
     });
     document.getElementById('path_img').addEventListener('change', function (e) {
