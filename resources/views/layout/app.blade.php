@@ -23,11 +23,13 @@
  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     @if (!Route::is('login'))
         @include('components.navbar', $dataUser)
+        <div class="lg:ml-[16.5rem] ml-0 w-full lg:w-[63rem]">
+            @yield('content')
+        </div>
+    @else
+            @yield('content')
     @endif
 
-    <div class="lg:ml-[16.5rem] ml-0 w-full lg:w-[63rem]">
-        @yield('content')
-    </div>
 
     <script>
         const userStatus = "{{ session('dataUser')['status'] ?? 'guest' }}";
