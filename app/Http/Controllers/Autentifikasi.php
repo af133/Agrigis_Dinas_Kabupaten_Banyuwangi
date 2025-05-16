@@ -64,27 +64,31 @@ public function updateProfile(Request $request)
         return redirect()->route('profile')->with('error', 'User tidak ditemukan.');
     }
 
+    // Validasi input
     $request->validate([
-        'name' => 'nullable|string|max:255',
-        'password' => 'nullable|string|min:6',
-        'nmr_telpon' => 'nullable|string|max:15',
-        'path_img' => 'nullable',
+        'name'        => 'nullable|string|max:255',
+        'password'    => 'nullable|string|min:6',
+        'nmr_telpon'  => 'nullable|string|max:15',
+        'path_img'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar ditambahkan
     ]);
 
-    // Update jika diisi, kalau tidak, tetap pakai data lama
+    // Update nama jika diisi
     if ($request->filled('name')) {
         $user->nama = $request->name;
     }
 
+    // Update nomor telepon jika diisi
     if ($request->filled('nmr_telpon')) {
         $user->nmr_telpon = $request->nmr_telpon;
     }
 
+    // Update password jika diisi
     if ($request->filled('password')) {
         $user->password = Hash::make($request->password);
     }
-   
-     if ($request->hasFile('path_img')) {
+
+    // Upload gambar jika dikirim
+    if ($request->hasFile('path_img')) {
         $cloudinary = new Cloudinary([
             'cloud' => [
                 'cloud_name' => 'ds62ywc1c',
@@ -96,24 +100,31 @@ public function updateProfile(Request $request)
         $file = $request->file('path_img')->getRealPath();
 
         try {
-            $upload = $cloudinary->uploadApi()->upload($file);
-            $url= $upload['secure_url'];
-             $user->path_img=$url;
+            $upload = $cloudinary->uploadApi()->upload($file, [
+                'folder' => 'user_images' // opsional: simpan di folder khusus
+            ]);
+            $url = $upload['secure_url'] ?? null;
+            $user->path_img = $url ?? $user->path_img;
         } catch (\Exception $e) {
-            dd('ERROR: ' . $e->getMessage());
-        }}
+            return redirect()->route('profile')->with('error', 'Upload gambar gagal: ' . $e->getMessage());
+        }
     }
+
+    // Simpan perubahan
     $user->save();
 
-    session(['dataUser' => [
-        'id' => $user->id,
-        'nama' => $user->nama,
-        'email' => $user->email,
-        'password' => $user->password,
-        'nmr_telpon' => $user->nmr_telpon,
-        'path_img' => $user->path_img,
-        'status' => $user->status->status ?? null,
-    ]]);
+    // Perbarui data session
+    session([
+        'dataUser' => [
+            'id'         => $user->id,
+            'nama'       => $user->nama,
+            'email'      => $user->email,
+            'password'   => $user->password,
+            'nmr_telpon' => $user->nmr_telpon,
+            'path_img'   => $user->path_img,
+            'status'     => $user->status->status ?? null,
+        ]
+    ]);
 
     return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui');
 }
