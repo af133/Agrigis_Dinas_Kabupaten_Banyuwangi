@@ -86,26 +86,26 @@ public function updateProfile(Request $request)
 
     // Upload gambar jika ada
     if ($request->hasFile('path_img')) {
-        try {
-            $cloudinary = new Cloudinary([
+            $cloudinary = new \Cloudinary\Cloudinary([
                 'cloud' => [
                     'cloud_name' => 'ds62ywc1c',
                     'api_key'    => '824819866697979',
                     'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
-                    
                 ],
             ]);
 
-            $uploadedFile = $request->file('path_img')->getRealPath();
-            $uploadResult = $cloudinary->uploadApi()->upload($uploadedFile, [
-                'folder' => 'user_profile',
-            ]);
+            try {
+                $filePath = $request->file('path_img')->getRealPath();
 
-            $user->path_img = $uploadResult['secure_url'] ?? $user->path_img;
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal mengunggah gambar: ' . $e->getMessage());
+                $uploadResult = $cloudinary->uploadApi()->upload($filePath, [
+                    'folder' => 'profile',
+                ]);
+
+                $user->path_img = $uploadResult['secure_url'] ?? $user->path_img;
+            } catch (\Exception $e) {
+                return back()->with('error', 'Gagal mengunggah gambar: ' . $e->getMessage());
+            }
         }
-    }
 
     $user->save();
 
