@@ -102,6 +102,7 @@ public function updateProfile(Request $request)
         } catch (\Exception $e) {
             dd('ERROR: ' . $e->getMessage());
         }
+    }
     $user->save();
 
     session(['dataUser' => [
