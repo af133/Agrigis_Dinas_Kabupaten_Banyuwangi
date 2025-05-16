@@ -1,5 +1,7 @@
 @extends('layout.app')
 
+@section('title','profil')
+
 @section('content')
 <div class="bg-transparent w-full ">
     @error('path_img')
