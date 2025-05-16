@@ -52,10 +52,10 @@
             {{-- Password --}}
             <div>
                 <label class="block text-sm text-gray-700 mb-1">Password</label>
-                <input type="password" name="password" id="password" readonly
-                       class="editable w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-600"
-                       style="background-color: #DDFFAC; border-color: #727272;"
-                       value="{{ $dataUser['password'] ?? '' }}">
+              <input type="password" name="password" id="password" readonly
+       class="editable w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-600"
+       style="background-color: #DDFFAC; border-color: #727272;"
+       placeholder="Isi jika ingin ganti password">
             </div>
 
             {{-- Nomor Telepon --}}
