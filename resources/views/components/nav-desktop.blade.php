@@ -65,13 +65,18 @@
             <span>Akun Profil</span>
         </div>
     </x-nav-link>
-
-    <x-nav-link href="#" :active="request()->is('#')">
-        <div class="flex items-center space-x-2">
-            <img src="{{ asset('icons/Logout.png') }}" alt="Keluar Icon" class="w-5 h-5">
-            <span>Keluar</span>
-        </div>
-    </x-nav-link>
+<form method="POST" action="{{ route('logout') }}" id="logout-form">
+    @csrf
+    <button type="submit" class="w-full text-left">
+        <x-nav-link :active="request()->is('logout')">
+            <div class="flex items-center space-x-2">
+                <img src="{{ asset('icons/Logout.png') }}" alt="Keluar Icon" class="w-5 h-5">
+                <span>Keluar</span>
+            </div>
+        </x-nav-link>
+    </button>
+</form>
+    
 </div>
   </div>
 </aside>
