@@ -140,9 +140,6 @@
             return;
         }
 
-        setTimeout(() => {
-            window.location.href = "{{ route('profile') }}";
-        }, 500);
     });
     document.getElementById('path_img').addEventListener('change', function (e) {
     const file = e.target.files[0];
