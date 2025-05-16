@@ -58,7 +58,7 @@ Route::get('profile', function () {
 })->name('profile');
 Route::get('tambahAkun', [Autentifikasi::class,'Status'])->name('users.create');
 Route::post('tambahAkun', [Autentifikasi::class, 'store'])->name('userss.store');
-Route::post('/profil/update', [Autentifikasi::class, 'updateProfile'])->name('profil.update');
+Route::post('/profil', [Autentifikasi::class, 'updateProfile'])->name('profil.update');
 
 // -------------------------------------------------------------------------------
 // --------------------------------- Notification -------------------------------------
