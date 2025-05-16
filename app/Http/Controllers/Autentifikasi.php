@@ -68,7 +68,7 @@ public function updateProfile(Request $request)
         'name' => 'nullable|string|max:255',
         'password' => 'nullable|string|min:6',
         'nmr_telpon' => 'nullable|string|max:15',
-        'path_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'path_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:200048',
     ]);
 
     // Update jika diisi, kalau tidak, tetap pakai data lama
