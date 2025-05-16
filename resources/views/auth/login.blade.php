@@ -29,7 +29,7 @@
             Submit
         </button>
         @if (session('error'))
-        <div class="bg-[#fd8e8e] text-white p-1 rounded mt-4">
+        <div class=" text-[red] mt-2">
             {{ session('error') }}
         </div>
         @endif
