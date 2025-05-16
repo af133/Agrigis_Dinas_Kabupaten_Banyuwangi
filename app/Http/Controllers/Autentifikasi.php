@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Session;
 use App\Models\Akun;
 use App\Models\StatusPekerjaan;
 use Illuminate\Support\Facades\Hash;
