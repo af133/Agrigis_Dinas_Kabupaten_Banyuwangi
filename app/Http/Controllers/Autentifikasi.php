@@ -62,9 +62,9 @@ class Autentifikasi extends Controller
 
         // Validasi inputan
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:6',
-            'nmr_telpon' => 'required|string|max:15',
+            'nmr_telpon' => 'nullable|string|max:15',
             'path_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
