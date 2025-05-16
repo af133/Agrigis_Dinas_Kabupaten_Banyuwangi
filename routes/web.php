@@ -72,22 +72,3 @@ Route::get('notification', [Notification::class,'showNotification'])->name('noti
 
 Route::post('/logout', [Autentifikasi::class, 'logout'])->name('logout');
 
-
-
-
-Route::get('/test-upload', function () {
-    $cloudinary = new \Cloudinary\Cloudinary([
-        'cloud' => [
-            'cloud_name' => 'ds62ywc1c',
-            'api_key'    => '824819866697979',
-            'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
-        ],
-    ]);
-
-    try {
-        $upload = $cloudinary->uploadApi()->upload('https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png');
-        dd($upload);
-    } catch (\Exception $e) {
-        dd('ERROR: ' . $e->getMessage());
-    }
-});
