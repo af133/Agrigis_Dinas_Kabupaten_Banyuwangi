@@ -54,80 +54,71 @@ class Autentifikasi extends Controller
     }
     
     
-  // Update Profile method with better error handling
-public function updateProfile(Request $request)
-{
-    $userId = session('dataUser.id');
-    $user = Akun::find($userId);
+  public function updateProfile(Request $request)
+    {
+        $userId = session('dataUser.id');
+        $user   = Akun::find($userId);
 
-    if (!$user) {
-        return redirect()->route('profile')->with('error', 'User tidak ditemukan.');
-    }
+        if (!$user) {
+            return redirect()->route('profile')->with('error', 'User tidak ditemukan.');
+        }
 
-    // Validasi input
-    $request->validate([
-        'name'        => 'nullable|string|max:255',
-        'password'    => 'nullable|string|min:6',
-        'nmr_telpon'  => 'nullable|string|max:15',
-        'path_img'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar ditambahkan
-    ]);
-
-    // Update nama jika diisi
-    if ($request->filled('name')) {
-        $user->nama = $request->name;
-    }
-
-    // Update nomor telepon jika diisi
-    if ($request->filled('nmr_telpon')) {
-        $user->nmr_telpon = $request->nmr_telpon;
-    }
-
-    // Update password jika diisi
-    if ($request->filled('password')) {
-        $user->password = Hash::make($request->password);
-    }
-
-    // Upload gambar jika dikirim
-    if ($request->hasFile('path_img')) {
-        $cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => 'ds62ywc1c',
-                'api_key'    => '824819866697979',
-                'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
-            ],
+        $request->validate([
+            'name'       => 'nullable|string|max:255',
+            'password'   => 'nullable|string|min:6',
+            'nmr_telpon' => 'nullable|string|max:15',
+            'path_img'   => 'nullable|image|mimes:jpg,jpeg,png|max:4048',
         ]);
 
-        $file = $request->file('path_img')->getRealPath();
-
-        try {
-            $upload = $cloudinary->uploadApi()->upload($file, [
-                'folder' => 'user_images' // opsional: simpan di folder khusus
-            ]);
-            $url = $upload['secure_url'] ?? null;
-            $user->path_img = $url ?? $user->path_img;
-        } catch (\Exception $e) {
-            return redirect()->route('profile')->with('error', 'Upload gambar gagal: ' . $e->getMessage());
+        if ($request->filled('name')) {
+            $user->nama = $request->name;
         }
+
+        if ($request->filled('nmr_telpon')) {
+            $user->nmr_telpon = $request->nmr_telpon;
+        }
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('path_img')) {
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => 'ds62ywc1c',
+                    'api_key'    => '824819866697979',
+                    'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
+                ],
+            ]);
+
+            $file = $request->file('path_img')->getRealPath();
+
+            try {
+                $upload = $cloudinary->uploadApi()->upload($file, [
+                    'folder' => 'user_images'
+                ]);
+                $user->path_img = $upload['secure_url'] ?? $user->path_img;
+            } catch (\Exception $e) {
+                return redirect()->route('profile')->with('error', 'Gagal mengunggah gambar.');
+            }
+        }
+
+        $user->save();
+
+        // Update session
+        session([
+            'dataUser' => [
+                'id'          => $user->id,
+                'nama'        => $user->nama,
+                'email'       => $user->email,
+                'nmr_telpon'  => $user->nmr_telpon,
+                'path_img'    => $user->path_img,
+                'status'      => optional($user->status)->status,
+            ]
+        ]);
+
+        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui!');
     }
-
-    // Simpan perubahan
-    $user->save();
-
-    // Perbarui data session
-    session([
-        'dataUser' => [
-            'id'         => $user->id,
-            'nama'       => $user->nama,
-            'email'      => $user->email,
-            'password'   => $user->password,
-            'nmr_telpon' => $user->nmr_telpon,
-            'path_img'   => $user->path_img,
-            'status'     => $user->status->status ?? null,
-        ]
-    ]);
-
-    return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui');
-}
 
     public function Status(){
         $statusPekerjaan = StatusPekerjaan::all()->map(function ($item) {
