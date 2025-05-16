@@ -83,33 +83,27 @@ public function updateProfile(Request $request)
     if ($request->filled('password')) {
         $user->password = Hash::make($request->password);
     }
-
-    // Upload gambar jika ada
+   
     if ($request->hasFile('path_img')) {
-            $cloudinary = new \Cloudinary\Cloudinary([
-                'cloud' => [
-                    'cloud_name' => 'ds62ywc1c',
-                    'api_key'    => '824819866697979',
-                    'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
-                ],
-            ]);
+         $cloudinary = new \Cloudinary\Cloudinary([
+        'cloud' => [
+            'cloud_name' => 'ds62ywc1c',
+            'api_key'    => '824819866697979',
+            'api_secret' => 'mtRkUZYo8jJJ4h3-A5jbhsTa39A',
+            ],
+        ]);
+    
+        $file = $request->file('path_img')->getRealPath();
 
-            try {
-                $filePath = $request->file('path_img')->getRealPath();
-
-                $uploadResult = $cloudinary->uploadApi()->upload($filePath, [
-                    'folder' => 'profile',
-                ]);
-
-                $user->path_img = $uploadResult['secure_url'] ?? $user->path_img;
-            } catch (\Exception $e) {
-                return back()->with('error', 'Gagal mengunggah gambar: ' . $e->getMessage());
-            }
+        try {
+            $upload = $cloudinary->uploadApi()->upload($file);
+            $url = $upload['secure_url'];
+            $user->path_img = $url ?? $user->path_img;
+        } catch (\Exception $e) {
+            dd('ERROR: ' . $e->getMessage());
         }
-
     $user->save();
 
-    // Update session
     session(['dataUser' => [
         'id' => $user->id,
         'nama' => $user->nama,
