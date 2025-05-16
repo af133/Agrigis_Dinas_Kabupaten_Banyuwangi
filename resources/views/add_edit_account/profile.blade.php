@@ -2,6 +2,9 @@
 
 @section('content')
 <div class="bg-transparent w-full ">
+    @error('path_img')
+    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+    @enderror
     <h1 class="px-10 pt-4 text-[#0E5509] font-bold text-[clamp(1.4rem,2vw,3rem)]">Profil</h1>
     <div class="w-full mt-1 h-2 bg-[#DDFFAC] mb-2"></div>
 
